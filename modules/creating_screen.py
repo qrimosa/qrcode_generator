@@ -10,7 +10,7 @@ class App(ctk.CTk):
         self.geometry(f"{self.APP_WIDTH}x{self.APP_HEIGHT}+{0}+{0}")
         self.resizable(False, False)
         self.title("QRCode Creator")
-        self.wm_iconbitmap("5.ico")
+        self.wm_iconbitmap("media\\5.ico")
         self.config(bg = "black")
 
 app = App()
