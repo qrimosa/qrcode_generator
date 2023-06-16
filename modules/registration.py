@@ -95,7 +95,7 @@ def login():
         entry_6.delete(0, 'end')
         reg_bt_cmd()
     else:
-        messagebox.showinfo(title= "😁", message= f"Welcum {entry_5.get()}!")
+        messagebox.showinfo(title= "😁", message= f"Welcome {entry_5.get()}!")
         # entry_1.delete(0, 'end')
         # entry_2.delete(0, 'end')
         # entry_3.delete(0, 'end')
@@ -149,6 +149,12 @@ def logout():
     qrcd.apply_drawer_bt.place_forget()
     qrcd.colormask_patterns.place_forget()
     qrcd.apply_colormask_bt.place_forget()
+    entry_1.delete(0, 'end')
+    entry_2.delete(0, 'end')
+    entry_3.delete(0, 'end')
+    entry_4.delete(0, 'end')
+    entry_5.delete(0, 'end')
+    entry_6.delete(0, 'end')
     qrcd.svg_bt.place_forget()
     user_bt.place_forget()
     logout_bt.place_forget()
@@ -199,7 +205,7 @@ entry_6 = tk.Entry(m_screen.app, font = "arial 12 bold", cursor= "xterm")
 
 user_bt = tk.Button(m_screen.app, image = user_icon, compound= "left", text = "", font= "arial 9 bold", fg = "white", bg = "black", bd = 0, command = user_bt_cmd)
  
-logout_bt = tk.Button(m_screen.app, text = 'Logout', font = "arial 12 bold", foreground= "white", cursor= "hand2", command = logout)
+logout_bt = tk.Button(m_screen.app, text = 'Log Out', background= "red", font = "arial 11 bold", foreground= "white", cursor= "hand2", command = logout)
 
 meme_frame = ctk.CTkFrame(m_screen.app, bg_color= "#1b1b1b", width = 450, height = 325)
 meme_frame.place(x = 450 - 225, y = 150)

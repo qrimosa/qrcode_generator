@@ -21,11 +21,12 @@ from qrcode.image.styles.colormasks import SquareGradiantColorMask
 from qrcode.image.styles.colormasks import HorizontalGradiantColorMask
 from qrcode.image.styles.colormasks import VerticalGradiantColorMask
 import qrcode.image.svg
+import modules.registration as mreg
 
 qr = qrcode.QRCode(
     version = 1,
     error_correction = qrcode.constants.ERROR_CORRECT_H,
-    box_size = 10, 
+    box_size = 50, 
     border = 1 
 )
 
@@ -33,6 +34,11 @@ path_to_logo = None
 svg_factory = None
 
 def svg_cmd():
+    add_logo_bt.configure(state = "disabled")
+    bgcolor.configure(state = "disabled")
+    fgcolor.configure(state = "disabled")
+    apply_colormask_bt.configure(state = "disabled")
+    apply_drawer_bt.configure(state = "disabled")
     method = "basic"
     if method == "basic":
         global svg_factory
@@ -54,6 +60,7 @@ def make_qr():
         global imgqr
         
         if path_to_logo == None and svg_factory == None:
+            login = qrdata.get()
             imgqr = qr.make_image(back_color = (bg_color[1]), fill_color = (fg_color[1]), image_factory= StyledPilImage, 
                               module_drawer = abc, color_mask = a)
             imgqr = imgqr.resize((315, 315))
@@ -71,8 +78,8 @@ def make_qr():
         
         elif svg_factory != None:
             global svg_imgqr
-            svg_imgqr = qr.make_image(back_color = (bg_color[1]), fill_color = (fg_color[1]), image_factory= svg_factory)
-            imgqr = qr.make_image(back_color = (bg_color[1]), fill_color = (fg_color[1]))
+            svg_imgqr = qr.make_image(image_factory= svg_factory)
+            imgqr = qr.make_image()
             imgqr = imgqr.resize((315, 315))
             imagetk = ImageTk.PhotoImage(imgqr)
             qrcode_label = ctk.CTkLabel(qrcode_frame, image = imagetk, text = "")
@@ -100,7 +107,9 @@ def save():
         if input_path.endswith(".svg"):
             svg_imgqr.save(input_path)
             qr.clear()
+
         imgqr.save(input_path)
+        qr.clear()
         
 def apply_drawer():
     global abc 
