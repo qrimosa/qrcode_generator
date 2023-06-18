@@ -5,11 +5,13 @@ import sqlite3
 from tkinter import messagebox
 import modules.myqrcode as qrcd
 from PIL import Image, ImageTk
+import os
 
 conn = sqlite3.connect("media\\database.db")
 cursor = conn.cursor()
 cursor.execute('CREATE TABLE IF NOT EXISTS Users (Email TEXT, Login TEXT, Password TEXT)')
 conn.commit()
+
 
 def reg_bt_cmd():
     login_bt.place_forget()
@@ -81,6 +83,7 @@ def reg():
         entry_1.delete(0, 'end')
         entry_2.delete(0, 'end')
         entry_3.delete(0, 'end')
+        login_bt_cmd()
 
 def login():
     email = entry_4.get()
@@ -96,12 +99,6 @@ def login():
         reg_bt_cmd()
     else:
         messagebox.showinfo(title= "😁", message= f"Welcome {entry_5.get()}!")
-        # entry_1.delete(0, 'end')
-        # entry_2.delete(0, 'end')
-        # entry_3.delete(0, 'end')
-        # entry_4.delete(0, 'end')
-        # entry_5.delete(0, 'end')
-        # entry_6.delete(0, 'end')
         entry_1.place_forget()
         entry_2.place_forget()
         entry_3.place_forget()
@@ -121,7 +118,6 @@ def login():
         main_label.place_forget()
         qrcd.qrdata.place(x = 100, y = 150)
         qrcd.make_qr_bt.place(x = 665, y = 545)
-        # qrcd.image_label.place(x = 350, y = 400)
         qrcd.add_logo_bt.place(x = 100, y = 250)
         qrcd.save_bt.place(x = 715, y = 595)
         qrcd.fgcolor.place(x = 100, y = 350)
@@ -135,6 +131,13 @@ def login():
         qrcd.svg_bt.place(x = 615, y = 550)
         user_bt.place(x = 800, y = 40)
         user_bt.config(text=entry_5.get())
+        directory = entry_5.get()
+        parent_dir = "C:\\marat\\python\\qrcode\\users"
+        path = os.path.join(parent_dir, directory)
+        isExist = os.path.exists(path)
+        if not isExist:
+            os.mkdir(path)
+
 
 def logout():
     qrcd.qrdata.place_forget()
@@ -149,6 +152,9 @@ def logout():
     qrcd.apply_drawer_bt.place_forget()
     qrcd.colormask_patterns.place_forget()
     qrcd.apply_colormask_bt.place_forget()
+    qrcd.account_bt.place_forget()
+    qrcd.image_label.configure(image = None)
+    qrcd.listbox.delete(0, 'end')
     entry_1.delete(0, 'end')
     entry_2.delete(0, 'end')
     entry_3.delete(0, 'end')
@@ -158,11 +164,19 @@ def logout():
     qrcd.svg_bt.place_forget()
     user_bt.place_forget()
     logout_bt.place_forget()
+    
 
     reg_bt_cmd()
 
 def user_bt_cmd():
+    list_path = os.listdir(f"C:\\marat\\python\\qrcode\\users\\{entry_5.get()}")
+    path = f"C:\\marat\\python\\qrcode\\users\\{entry_5.get()}" 
     logout_bt.place(x = 800, y = 110)
+    qrcd.account_bt.place( x = 650, y = 110)
+    for image in list_path:
+        if image.endswith(".png") or image.endswith('.jpg'):
+            image_path = os.path.join(path, image)
+            qrcd.listbox.insert('end', image_path)
 
 user_icon = Image.open('media\\12345.png')
 user_icon = user_icon.resize((25, 25), Image.LANCZOS)
@@ -212,3 +226,4 @@ meme_frame.place(x = 450 - 225, y = 150)
 
 meme_label =  ctk.CTkLabel(meme_frame, image = meme_image, text = "")
 meme_label.pack()
+
